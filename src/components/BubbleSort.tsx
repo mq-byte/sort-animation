@@ -49,7 +49,10 @@ function BubbleSort() {
                         transform: i === activeIndex ? `translateX(${toRight.data}px)`:i === activeIndex + 1 ? `translateX(${toLeft.data}px)`:`translateX(0px)`,
                         margin: '0 10px',
                         float: "left"
-                    }}>{h}-{i}-{activeIndex}</div>
+                    }}>
+                        {/*<div>h: {h}</div>*/}
+                        <div>i: {i}</div>
+                    </div>
                 })}
             </div>
             <div onClick={()=>{setStop(true)}}>stop</div>

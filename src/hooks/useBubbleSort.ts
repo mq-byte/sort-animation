@@ -1,4 +1,4 @@
-import {useCallback, useEffect, useMemo, useRef, useState} from "react";
+import {useCallback, useMemo, useRef, useState} from "react";
 
 export const useBubbleSort = (arr: number[])=>{
     const isStop = useRef(true);
@@ -8,15 +8,6 @@ export const useBubbleSort = (arr: number[])=>{
         data: [...arr],
         exchange: false
     });
-    const next = useCallback((onEnd:(x:any,y:any)=>void)=>{
-        console.log('Bubble next',isStop.current)
-        _next(onEnd)
-    },[])
-
-    const setStop = useCallback((v:boolean)=>{
-        console.log('Bubble setStop',isStop.current)
-        isStop.current = v;
-    },[]);
 
     const _next = useMemo(()=>{
         let isStart = false;
@@ -60,6 +51,16 @@ export const useBubbleSort = (arr: number[])=>{
             },50)
         }
     },[])
+
+    const next = useCallback((onEnd:(x:any,y:any)=>void)=>{
+        console.log('Bubble next',isStop.current)
+        _next(onEnd)
+    },[_next])
+
+    const setStop = useCallback((v:boolean)=>{
+        console.log('Bubble setStop',isStop.current)
+        isStop.current = v;
+    },[]);
 
     return {
         data,
