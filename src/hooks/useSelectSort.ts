@@ -1,10 +1,11 @@
 import {useCallback, useMemo, useRef, useState} from "react";
 
-export const useBubbleSort = (arr: number[])=>{
+export const useSelectSort = (arr: number[])=>{
     const isStop = useRef(true);
     const isEnd = useRef(true);
     const [data,setData] = useState({
-        index: 0,
+        index: 1,
+        lock: 0,
         data: [...arr],
         exchange: false
     });
@@ -21,13 +22,13 @@ export const useBubbleSort = (arr: number[])=>{
             if(isStart || isStop.current) return;
             setIsStart(true);
             setTimeout(()=>{
-                if(data.data[data.index] > data.data[data.index + 1]){
+                if(data.data[data.lock] > data.data[data.index]){
                     console.log('交换');
                     isEnd.current = false;
                     //开始数据交换
-                    let t = data.data[data.index];
-                    data.data[data.index] = data.data[data.index + 1];
-                    data.data[data.index + 1] = t;
+                    let t = data.data[data.lock];
+                    data.data[data.lock] = data.data[data.index];
+                    data.data[data.index] = t;
                     data.exchange = true;
                     setData({...data});
                     //交换结束，停止排序，等待回调结束
@@ -36,13 +37,16 @@ export const useBubbleSort = (arr: number[])=>{
                     //不交换，向前移动
                     data.exchange = false;
                     data.index++;
-                    if(data.index === arr.length - 1){
-                        if(isEnd.current){
-                            setStop(true)
+                    if(data.index === arr.length){
+                        data.lock++;
+                        if(data.lock === arr.length - 1){
+                            isStop.current = true;
+                            data.lock++;
+
                         }else {
-                            isEnd.current = true;
+                            data.index = data.lock + 1;
                         }
-                        data.index = 0;
+
                     }
                     setData({...data});
                 }

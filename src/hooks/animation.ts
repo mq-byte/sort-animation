@@ -20,7 +20,6 @@ export const useAnimationData = (
     useEffect(()=>{
         if(isStop) return;
         requestAnimationFrame(()=>{
-            console.log(_endCondition.current(x));
             if(_endCondition.current(x)) {
                 end.current(x);
                 setX(initData)

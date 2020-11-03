@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {useAnimationData} from '../hooks/animation'
-import {useBubbleSort} from '../hooks/useBubbleSort'
+import {useSelectSort} from '../hooks/useSelectSort'
 
-function BubbleSort() {
+function SelectSort() {
     const [arr,setArr] = useState([3,2,6,8,7,9,1,4,5]);
     const toRight = useAnimationData(0,10)
     const toLeft = useAnimationData(0,-10)
@@ -10,20 +10,23 @@ function BubbleSort() {
         data,
         setStop,
         next
-    } = useBubbleSort(arr);
-    const { index:activeIndex,exchange } = data;
+    } = useSelectSort(arr);
+    const { index:activeIndex, lock, } = data;
     const startS = useCallback(()=>{
         next((n:any, d:any)=>{
             if(d.exchange){
-                toLeft.start((x: number,)=>{
+                console.log(d)
+                const xd = d.index - d.lock;
+                toLeft.start((x: number)=>{
                     setArr([...d.data])
                     n(startS)
                 },(x:number)=> {
-                    return x === 70
+                    console.log('-----',x);
+                    return x === -70*xd
                 })
                 toRight.start((x: number)=>{
 
-                },(x:number)=> x === -70)
+                },(x:number)=> x === 70*xd)
             }else {
                 n(startS)
             }
@@ -45,13 +48,13 @@ function BubbleSort() {
                     return <div style={{
                         width: '50px',
                         height: h * 20,
-                        background: i === activeIndex || i === activeIndex + 1 ? 'red':'yellow',
-                        transform: i === activeIndex ? `translateX(${toRight.data}px)`:i === activeIndex + 1 ? `translateX(${toLeft.data}px)`:`translateX(0px)`,
+                        background: i < lock ? 'green': i === lock ? 'red': i === activeIndex ? 'yellow' : "#333",
+                        transform: i === activeIndex ? `translateX(${toLeft.data}px)`:i === lock ? `translateX(${toRight.data}px)`:`translateX(0px)`,
                         margin: '0 10px',
                         float: "left"
                     }}>
                         {/*<div>h: {h}</div>*/}
-                        <div>i: {i}</div>
+                        <div>{lock}-{activeIndex}-{i}</div>
                     </div>
                 })}
             </div>
@@ -61,4 +64,4 @@ function BubbleSort() {
     );
 }
 
-export default BubbleSort;
+export default SelectSort;
