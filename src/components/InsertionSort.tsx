@@ -40,6 +40,7 @@ function InsertionSort() {
     },[])
     return (
         <div>
+            <h2>插入排序</h2>
             <div
                 style={{
                     display: 'flex',

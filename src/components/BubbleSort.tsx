@@ -38,6 +38,7 @@ function BubbleSort() {
     },[])
     return (
         <div>
+            <h2>冒泡排序</h2>
             <div
                 style={{
                     display: 'flex',

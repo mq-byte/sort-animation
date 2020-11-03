@@ -40,6 +40,7 @@ function SelectSort() {
     },[])
     return (
         <div>
+            <h2>选择排序</h2>
             <div
                 style={{
                     display: 'flex',
