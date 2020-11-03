@@ -12,15 +12,26 @@ export const useAnimationData = (
         onEnd:(x?:number)=>void,
         endCondition:(x:number)=>boolean
     ):void=>{
-        setIsStop(false);
+        // setIsStop(false);
         end.current = onEnd;
         _endCondition.current = endCondition;
+        _nextFrame();
     },[]);
 
-    useEffect(()=>{
-        if(isStop) return;
-        requestAnimationFrame(()=>{
-            console.log(_endCondition.current(x));
+    const _nextFrame = useCallback(()=>{
+        // requestAnimationFrame(()=>{
+        //     console.log(x);
+        //     if(_endCondition.current(x)) {
+        //         end.current(x);
+        //         setX(initData)
+        //         return;
+        //     }
+        //     setX(x + speed)
+        //     setIsStop(false)
+        //     _nextFrame();
+        // })
+        setTimeout(()=>{
+            console.log(x);
             if(_endCondition.current(x)) {
                 end.current(x);
                 setX(initData)
@@ -28,9 +39,24 @@ export const useAnimationData = (
             }
             setX(x + speed)
             setIsStop(false)
-        })
-        setIsStop(true)
-    },[isStop])
+            _nextFrame();
+        },1000);
+    },[x])
+
+    // useEffect(()=>{
+    //     if(isStop) return;
+    //     requestAnimationFrame(()=>{
+    //         console.log(_endCondition.current(x));
+    //         if(_endCondition.current(x)) {
+    //             end.current(x);
+    //             setX(initData)
+    //             return;
+    //         }
+    //         setX(x + speed)
+    //         setIsStop(false)
+    //     })
+    //     setIsStop(true)
+    // },[isStop])
 
     return {
         data:x,
