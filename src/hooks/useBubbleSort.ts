@@ -1,42 +1,62 @@
-import {useCallback, useEffect, useRef, useState} from "react";
+import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 export const useBubbleSort = (arr: number[])=>{
-    const [isStop,setIsStop] = useState(true);
+    const isStop = useRef(true);
+    const [isEnd,setIsEnd] = useState(false);
     const [data,setData] = useState({
         index: 0,
         data: [...arr],
         exchange: false
     });
-    const end = useRef<(x:any)=>void>(()=> {})
-    const start = useCallback((onEnd)=>{
-        setIsStop(false);
-        end.current = onEnd;
+    const start = useCallback((onEnd:(x:any,y:any)=>void)=>{
+        console.log('Bubble start',isStop.current)
+        // isStop.current = false
+        next(onEnd)
     },[])
+
     const stop = useCallback(()=>{
-        setIsStop(true)
+        console.log('Bubble stop',isStop.current)
+        isStop.current = true;
     },[]);
-    useEffect(()=>{
-        if(isStop) return;
-        setTimeout(()=>{
-            if(data.data[data.index] > data.data[data.index + 1]){
-                let t = data.data[data.index];
-                data.data[data.index] = data.data[data.index + 1]
-                data.data[data.index + 1] = t;
-                data.exchange = true;
-                setData({...data});
-                end.current(data);
-            }else {
-                data.exchange = false;
-                data.index++;
-                if(data.index === arr.length - 1){
-                    data.index = 0;
+
+    const next = useMemo(()=>{
+        let isStart = false;
+        const setIsStart = (v:boolean)=>{isStart = v};
+        const n = (call:any)=>{
+            setIsStart(false);
+            call();
+        }
+        return (onEnd:(x:any,y:any)=>void)=>{
+            console.log(isStop.current,'-----------------');
+            if(isStart || isStop.current) return;
+            setIsStart(true);
+            setTimeout(()=>{
+                if(data.data[data.index] > data.data[data.index + 1]){
+                    console.log('交换');
+                    //开始数据交换
+                    let t = data.data[data.index];
+                    data.data[data.index] = data.data[data.index + 1];
+                    data.data[data.index + 1] = t;
+                    data.exchange = true;
+                    setData({...data});
+                    //交换结束，停止排序，等待回调结束
+                }else {
+                    console.log('前进');
+                    //不交换，向前移动
+                    data.exchange = false;
+                    data.index++;
+                    if(data.index === arr.length - 1){
+                        data.index = 0;
+                    }
+                    setData({...data});
                 }
-                setData({...data});
-                setIsStop(false);
-            }
-        },1000)
-        setIsStop(true);
-    },[isStop])
+
+                onEnd(n, {...data});
+            },1000)
+        }
+    },[])
+
+
     return {
         data,
         start,
