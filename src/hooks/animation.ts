@@ -11,18 +11,22 @@ export const useAnimationData = (
     const start = useCallback((
         onEnd:(x?:number)=>void,
         endCondition:(x:number)=>boolean
-    ):void=>{
+    ):any=>{
         setIsStop(false);
         end.current = onEnd;
         _endCondition.current = endCondition;
+        return initPosition;
     },[]);
+
+    const initPosition = useCallback(()=>{
+        setX(initData)
+    },[])
 
     useEffect(()=>{
         if(isStop) return;
         requestAnimationFrame(()=>{
             if(_endCondition.current(x)) {
                 end.current(x);
-                setX(initData)
                 return;
             }
             setX(x + speed)

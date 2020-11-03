@@ -15,14 +15,16 @@ function BubbleSort() {
     const startS = useCallback(()=>{
         next((n:any, d:any)=>{
             if(d.exchange){
-                toLeft.start((x: number)=>{
+                const initPositionL = toLeft.start((x: number)=>{
                     setArr([...d.data])
+                    initPositionL();
+                    initPositionR()
                     n(startS)
                 },(x:number)=> {
                     console.log('-----',x);
                     return x === -70
                 })
-                toRight.start((x: number)=>{
+                const initPositionR = toRight.start((x: number)=>{
 
                 },(x:number)=> x === 70)
             }else {

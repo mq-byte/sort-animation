@@ -1,8 +1,8 @@
 import React, {useCallback, useState} from 'react';
 import {useAnimationData} from '../hooks/animation'
-import {useSelectSort} from '../hooks/useSelectSort'
+import {useInsertionSort} from '../hooks/useInsertionSort'
 
-function SelectSort() {
+function InsertionSort() {
     const [arr,setArr] = useState([3,2,6,8,7,9,1,4,5]);
     const toRight = useAnimationData(0,10)
     const toLeft = useAnimationData(0,-10)
@@ -10,17 +10,17 @@ function SelectSort() {
         data,
         setStop,
         next
-    } = useSelectSort(arr);
+    } = useInsertionSort(arr);
     const { index:activeIndex, lock, } = data;
     const startS = useCallback(()=>{
         next((n:any, d:any)=>{
             if(d.exchange){
                 console.log(d)
-                const xd = d.index - d.lock;
+                const xd = d.lock - d.index;
                 const initPositionL = toLeft.start((x: number)=>{
                     setArr([...d.data])
-                    initPositionL();
                     initPositionR();
+                    initPositionL();
                     n(startS)
                 },(x:number)=> {
                     console.log('-----',x);
@@ -28,7 +28,7 @@ function SelectSort() {
                 })
                 const initPositionR = toRight.start((x: number)=>{
 
-                },(x:number)=> x === 70*xd)
+                },(x:number)=> x === 70)
             }else {
                 n(startS)
             }
@@ -50,8 +50,8 @@ function SelectSort() {
                     return <div style={{
                         width: '50px',
                         height: h * 20,
-                        background: i < lock ? 'green': i === lock ? 'red': i === activeIndex ? 'yellow' : "#333",
-                        transform: i === activeIndex ? `translateX(${toLeft.data}px)`:i === lock ? `translateX(${toRight.data}px)`:`translateX(0px)`,
+                        background: i < lock && i !==activeIndex ? 'green': i === lock ? 'red': i === activeIndex ? 'yellow' : "#333",
+                        transform: i >= activeIndex && i < lock ? `translateX(${toRight.data}px)`:i === lock ? `translateX(${toLeft.data}px)`:`translateX(0px)`,
                         margin: '0 10px',
                         float: "left"
                     }}>
@@ -66,4 +66,4 @@ function SelectSort() {
     );
 }
 
-export default SelectSort;
+export default InsertionSort;
