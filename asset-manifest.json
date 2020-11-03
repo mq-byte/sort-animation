@@ -1,0 +1,17 @@
+{
+  "files": {
+    "main.js": "/sort-animation/static/js/main.5be39f8b.chunk.js",
+    "main.js.map": "/sort-animation/static/js/main.5be39f8b.chunk.js.map",
+    "runtime-main.js": "/sort-animation/static/js/runtime-main.c57c8c9a.js",
+    "runtime-main.js.map": "/sort-animation/static/js/runtime-main.c57c8c9a.js.map",
+    "static/js/2.5b230af1.chunk.js": "/sort-animation/static/js/2.5b230af1.chunk.js",
+    "static/js/2.5b230af1.chunk.js.map": "/sort-animation/static/js/2.5b230af1.chunk.js.map",
+    "index.html": "/sort-animation/index.html",
+    "static/js/2.5b230af1.chunk.js.LICENSE.txt": "/sort-animation/static/js/2.5b230af1.chunk.js.LICENSE.txt"
+  },
+  "entrypoints": [
+    "static/js/runtime-main.c57c8c9a.js",
+    "static/js/2.5b230af1.chunk.js",
+    "static/js/main.5be39f8b.chunk.js"
+  ]
+}
