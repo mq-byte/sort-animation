@@ -10,15 +10,13 @@ function BubbleSort() {
     const toLeft = useAnimationData(0,-10,(x)=> x === -70)
     const {
         data,
-        stop,
-        start
+        setStop,
+        next
     } = useBubbleSort(arr);
     const { index:activeIndex,exchange } = data;
     const startS = useCallback(()=>{
-        start((n:any, d:any)=>{
-            console.log('ooooo')
+        next((n:any, d:any)=>{
             if(d.exchange){
-                console.log('start',arr);
                 toLeft.start((x: number)=>{
                     setArr([...d.data])
                     n(startS)
@@ -31,7 +29,10 @@ function BubbleSort() {
             }
         })
     },[data.index,data.exchange,...data.data])
-
+    const s = useCallback(()=>{
+        setStop(false);
+        startS();
+    },[])
     return (
         <div>
             <div
@@ -51,8 +52,8 @@ function BubbleSort() {
                     }}>{h}-{i}-{activeIndex}</div>
                 })}
             </div>
-            <div onClick={stop}>stop</div>
-            <div onClick={startS}>start</div>
+            <div onClick={()=>{setStop(true)}}>stop</div>
+            <div onClick={s}>start</div>
         </div>
     );
 }

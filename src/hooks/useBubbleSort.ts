@@ -2,24 +2,23 @@ import {useCallback, useEffect, useMemo, useRef, useState} from "react";
 
 export const useBubbleSort = (arr: number[])=>{
     const isStop = useRef(true);
-    const [isEnd,setIsEnd] = useState(false);
+    const isEnd = useRef(true);
     const [data,setData] = useState({
         index: 0,
         data: [...arr],
         exchange: false
     });
-    const start = useCallback((onEnd:(x:any,y:any)=>void)=>{
-        console.log('Bubble start',isStop.current)
-        // isStop.current = false
-        next(onEnd)
+    const next = useCallback((onEnd:(x:any,y:any)=>void)=>{
+        console.log('Bubble next',isStop.current)
+        _next(onEnd)
     },[])
 
-    const stop = useCallback(()=>{
-        console.log('Bubble stop',isStop.current)
-        isStop.current = true;
+    const setStop = useCallback((v:boolean)=>{
+        console.log('Bubble setStop',isStop.current)
+        isStop.current = v;
     },[]);
 
-    const next = useMemo(()=>{
+    const _next = useMemo(()=>{
         let isStart = false;
         const setIsStart = (v:boolean)=>{isStart = v};
         const n = (call:any)=>{
@@ -33,6 +32,7 @@ export const useBubbleSort = (arr: number[])=>{
             setTimeout(()=>{
                 if(data.data[data.index] > data.data[data.index + 1]){
                     console.log('交换');
+                    isEnd.current = false;
                     //开始数据交换
                     let t = data.data[data.index];
                     data.data[data.index] = data.data[data.index + 1];
@@ -46,21 +46,25 @@ export const useBubbleSort = (arr: number[])=>{
                     data.exchange = false;
                     data.index++;
                     if(data.index === arr.length - 1){
+                        if(isEnd.current){
+                            setStop(true)
+                        }else {
+                            isEnd.current = true;
+                        }
                         data.index = 0;
                     }
                     setData({...data});
                 }
 
                 onEnd(n, {...data});
-            },1000)
+            },50)
         }
     },[])
 
-
     return {
         data,
-        start,
-        stop
+        next,
+        setStop
     };
 }
 
