@@ -52,7 +52,7 @@ export const useSelectSort = (arr: number[])=>{
                 }
 
                 onEnd(n, {...data});
-            },50)
+            },300)
         }
     },[])
 

@@ -48,7 +48,7 @@ export const useBubbleSort = (arr: number[])=>{
                 }
 
                 onEnd(n, {...data});
-            },50)
+            },300)
         }
     },[])
 

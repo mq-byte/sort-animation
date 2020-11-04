@@ -1,6 +1,6 @@
 import {useCallback, useMemo, useRef, useState} from "react";
 
-export const useInsertionSort = (arr: number[])=>{
+export const useQuickSort = (arr: number[])=>{
     const isStop = useRef(true);
     const isEnd = useRef(true);
     const [data,setData] = useState({

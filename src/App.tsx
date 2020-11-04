@@ -2,6 +2,7 @@ import React from 'react';
 import BubbleSort from "./components/BubbleSort";
 import SelectSort from "./components/SelectSort";
 import InsertionSort from "./components/InsertionSort";
+import QuickSort from "./components/QuickSort";
 
 function App() {
   return (
@@ -11,6 +12,7 @@ function App() {
             margin: '0 auto'
         }}
     >
+        <QuickSort />
         <BubbleSort />
         <SelectSort />
         <InsertionSort />
